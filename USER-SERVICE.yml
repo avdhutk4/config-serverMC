@@ -1,0 +1,67 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: USER-SERVICE
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/major_switchMicroServiceUser
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      USERCB:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      USERRE:
+        registerHealthIndicator: true
+        maxRetryAttempts: 3
+        waitDuration: 10s
+  ratelimiter:
+    instances:
+      USERRL:
+        registerHealthIndicator: true
+        limitForPeriod: 5
+        limitRefreshPeriod: 10s
+        timeOutDuration: 5s
+
+
