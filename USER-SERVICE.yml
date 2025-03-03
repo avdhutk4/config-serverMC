@@ -21,7 +21,7 @@ logging:
     org.springframework.web: DEBUG
     com.app.users: DEBUG  # Set this to your base package
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%X{traceId:-}, %X{spanId:-}] [%thread] %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%X{traceId:-}, %X{spanId:-}] [${spring.application.name}] [%X{export:-}] [%thread] %logger{36} - %msg%n"
 
 
 eureka:
